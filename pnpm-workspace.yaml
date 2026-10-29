@@ -1,0 +1,10 @@
+# pnpm 12 reads all non-auth settings from this file (not from package.json).
+# Keep peer resolution forgiving and use a flat tree, which is what Next.js,
+# Playwright and ESLint all expect on Windows.
+nodeLinker: hoisted
+strictPeerDependencies: false
+autoInstallPeers: true
+
+# Approve the few dependencies that legitimately need to run install scripts.
+allowBuilds:
+  unrs-resolver: true
