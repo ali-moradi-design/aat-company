@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import { DemoNotice } from "@/shared/ui/DemoNotice";
 import { SuisseIntl } from "./ui/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aat-architecten.example"),
+  metadataBase: new URL("https://aat-company.ali-moradi-develop.com"),
+  // A recreation of a real studio's site: keep it out of search results.
+  robots: { index: false, follow: false },
   title: {
     default: "AAT|Architecten",
     template: "%s | AAT|Architecten",
@@ -37,7 +40,10 @@ export default function RootLayout({
       className={SuisseIntl.variable}
       data-scroll-behavior="smooth"
     >
-      <body className={`${SuisseIntl.className} antialiased`}>{children}</body>
+      <body className={`${SuisseIntl.className} antialiased`}>
+        {children}
+        <DemoNotice />
+      </body>
     </html>
   );
 }

@@ -9,8 +9,13 @@ const baseURL = `http://localhost:${PORT}`;
  * the browser downloaded by `pnpm exec playwright install`.
  */
 const channel = process.env.PLAYWRIGHT_CHANNEL ?? "chrome";
-const channelOption =
-  channel === "bundled" ? {} : { channel: channel as "chrome" | "msedge" };
+// PW_CHROMIUM_PATH points at an already installed Chromium (sandboxes).
+const executablePath = process.env.PW_CHROMIUM_PATH;
+const channelOption = executablePath
+  ? { launchOptions: { executablePath } }
+  : channel === "bundled"
+    ? {}
+    : { channel: channel as "chrome" | "msedge" };
 
 export default defineConfig({
   testDir: "./e2e",
@@ -43,10 +48,14 @@ export default defineConfig({
       testMatch: /responsive\.spec\.ts/,
     },
   ],
+  // E2E_SERVER=prod runs the built standalone server (`pnpm build` first), as CI does.
   webServer: {
-    command: "pnpm dev",
+    command:
+      process.env.E2E_SERVER === "prod"
+        ? "node scripts/serve.mjs 3005"
+        : "pnpm dev",
     url: baseURL,
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
     timeout: 180_000,
     stdout: "pipe",
   },

@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "next dev --webpack --port 3005",
-    "build": "next build --webpack",
-    "start": "next start --port 3005",
+    "build": "next build --webpack && node scripts/standalone.mjs",
+    "start": "node scripts/serve.mjs 3005",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

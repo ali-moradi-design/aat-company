@@ -35,7 +35,11 @@ export function SocialLinks({
         <li key={social.label} className="block leading-none">
           <a
             {...(social.href
-              ? { href: social.href, target: "_blank", rel: "noreferrer noopener" }
+              ? {
+                  href: social.href,
+                  target: "_blank",
+                  rel: "noreferrer noopener",
+                }
               : { "aria-disabled": true })}
             className={cn(
               "focus-ring block whitespace-nowrap transition-colors duration-[600ms] hover:text-grey-500",

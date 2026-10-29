@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AAT|Architecten (demo recreation)
 
-## Getting Started
+A recreation of a Belgian architecture studio's site with scroll choreography,
+built with Next.js 16 and Feature-Sliced Design, for a developer portfolio.
+It is **not affiliated with AAT|Architecten**: contact details are
+placeholders, the contact form sends nothing, every page says so in a fixed
+note, and the site asks search engines not to index it (`robots.txt`,
+`X-Robots-Tag`, robots meta).
 
-First, run the development server:
+Live: https://aat-company.ali-moradi-develop.com
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Commands
+
+Node 24, pnpm 12.
+
+```sh
+pnpm install
+pnpm dev          # http://localhost:3005
+pnpm check        # typecheck, lint, format
+pnpm build        # standalone server in .next/standalone
+pnpm start        # runs the standalone server on port 3005
+pnpm test:e2e     # Playwright against next dev
+E2E_SERVER=prod pnpm test:e2e   # against the built server, as CI does
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`PW_CHROMIUM_PATH` points Playwright at an installed Chromium;
+`PLAYWRIGHT_CHANNEL=bundled` uses the one from `pnpm exec playwright install`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `next.config.ts`: `output: "standalone"`; `scripts/standalone.mjs` copies
+  `public/` and `.next/static` into it. Headers (HSTS, nosniff, noindex) are
+  set there.
+- `Dockerfile`: only the standalone folder, runs as `node`, healthcheck on
+  `/robots.txt`.
+- `.github/workflows/docker.yml`: after CI passed on `main`, builds
+  `ghcr.io/ali-moradi-design/aat-company-web:<sha>`; deploy-kit then makes the
+  server pull it and restart.
+- `deploy/compose.yaml`: `127.0.0.1:3114`, read-only with a tmpfs for the
+  `next/image` cache, 384 MB (resizing the photos with sharp peaks near 280 MB).
+- `deploy/nginx.conf`: the host's site file (GET/HEAD only; certbot adds TLS).

@@ -39,7 +39,11 @@ export function ProjectsList({ projects }: { projects: Project[] }) {
   return (
     <section aria-labelledby="projects-heading">
       <div className="row project-items__row">
-        <SplitHeading as="h1" id="projects-heading" className="project-items__heading">
+        <SplitHeading
+          as="h1"
+          id="projects-heading"
+          className="project-items__heading"
+        >
           {HEADING}
         </SplitHeading>
 
