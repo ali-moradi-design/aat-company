@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 /** Anything that should grow the dot, mirroring the reference selector list. */

@@ -46,4 +46,3 @@ export function InstagramIcon(props: IconProps) {
 }
 
 /** The design studio's credit mark, as used in the reference footer. */
-

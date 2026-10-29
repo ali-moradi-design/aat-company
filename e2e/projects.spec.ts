@@ -15,9 +15,13 @@ test.describe("projects overview", () => {
 
     await expectSingleChrome(page);
 
-    await expect(page.locator("h1")).toHaveText(
-      "An overview of projects that start from the space within.",
-    );
+    // The heading is split into line spans; its accessible name is the full sentence.
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "An overview of projects that start from the space within.",
+      }),
+    ).toBeVisible();
 
     await expect(page.locator(`${LIST} .project-card`)).toHaveCount(16);
 

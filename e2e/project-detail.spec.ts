@@ -70,7 +70,9 @@ test.describe("project detail", () => {
     await card.click();
 
     await expect(page).toHaveURL(/\/projects\/.+/);
-    await expect(page.locator("h1")).toBeVisible();
+    // The list page may stay in the DOM, hidden, after the navigation: only
+    // count the visible heading.
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect
       .poll(() => page.evaluate(() => window.scrollY), { timeout: 5_000 })
       .toBeLessThan(2);
