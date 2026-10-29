@@ -6,5 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 cpSync(`${root}public`, `${root}.next/standalone/public`, { recursive: true });
-cpSync(`${root}.next/static`, `${root}.next/standalone/.next/static`, { recursive: true });
-console.log("standalone: public/ and .next/static copied");
+cpSync(`${root}.next/static`, `${root}.next/standalone/.next/static`, {
+  recursive: true,
+});
+process.stdout.write("standalone: public/ and .next/static copied\n");
